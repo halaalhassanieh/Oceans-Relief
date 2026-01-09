@@ -204,7 +204,7 @@ const FindRelief = () => {
                       <h3 className="text-lg font-bold mb-3" style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
                         {card.title}
                       </h3>
-                      <p className="text-sm leading-relaxed flex-grow" style={{ color: colors.mutedText }}>
+                      <p className="text-sm leading-relaxed grow" style={{ color: colors.mutedText }}>
                         {card.text}
                       </p>
                       <div className="mt-3 inline-block self-start px-3 py-1 rounded-full text-xs font-semibold"

@@ -39,7 +39,7 @@ const Navigation = ({
         <div className="flex items-center justify-between h-16">
           <button
             onClick={onLogoClick}
-            className="flex-shrink-0 cursor-pointer hover:opacity-80 transition"
+            className="shrink-0 cursor-pointer hover:opacity-80 transition"
           >
             <div
               className="text-xl sm:text-2xl font-bold"
@@ -50,7 +50,7 @@ const Navigation = ({
                     : colors.darkText,
               }}
             >
-              OceanCalm
+               Oceans Relief
             </div>
           </button>
 

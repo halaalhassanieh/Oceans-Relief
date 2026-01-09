@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <h3 className="text-xl font-bold mb-4" style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
-             OceansRelief
+             Oceans Relief
             </h3>
             <p style={{ color: colors.mutedText }}>Find calm between the waves.</p>
           </div>

@@ -31,7 +31,7 @@ const About = () => {
           transition={{ delay: 0.3 }}
           className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 text-center"
           style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
-          About <span style={{ color: colors.gold }}>OceanCalm</span>
+          About <span style={{ color: colors.gold }}> Oceans Relief</span>
         </motion.h1>
         
         <motion.div
@@ -41,7 +41,7 @@ const About = () => {
           className="text-xl mb-16 max-w-3xl mx-auto space-y-6"
           style={{ color: colors.mutedText }}>
           <p>
-            OceanCalm is your digital sanctuary for finding peace in life's turbulent moments. 
+             Oceans Relief is your digital sanctuary for finding peace in life's turbulent moments. 
             Like the ocean's rhythmic waves, we believe calm can be found even in the storm.
           </p>
           <p>
@@ -72,7 +72,7 @@ const About = () => {
               <h3 className="font-semibold mb-2" style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
                 Email
               </h3>
-              <p style={{ color: colors.mutedText }}>hello@oceancalm.com</p>
+              <p style={{ color: colors.mutedText }}>hello@OceansRelief.com</p>
             </div>
             <div className="text-center">
               <div className="text-4xl mb-3">💬</div>
