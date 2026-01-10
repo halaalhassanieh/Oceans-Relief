@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { getColors, useTheme } from './ThemeToggle';
 import { TagLines } from '../constants';
 import { DARK_COLORS, FADE_ANIMATION_CONFIG } from '../Configuration';
-
+import img from '/assets/ocean.jpg'
 // ============================================================================
 // COMPONENT: Cover Layer
 // ============================================================================
@@ -55,7 +55,7 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       }}
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
-        backgroundImage: 'url(src/assets/ocean.jpg)',
+        backgroundImage: `url(${img})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
