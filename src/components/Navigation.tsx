@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { PageType,NavigationProps } from "../types";
 import { useTheme, getColors } from "./ThemeToggle";
 import ThemeToggle from "./ThemeToggle";
-import { DARK_COLORS, LIGHT_COLORS } from "../Configuration";
 
 // ============================================================================
 // COMPONENT: Navigation
@@ -96,18 +95,6 @@ const Navigation = ({
 
             <ThemeToggle />
 
-            <button
-              className="px-4 xl:px-6 py-2 rounded-full font-semibold transition hover:opacity-90 text-sm xl:text-base whitespace-nowrap"
-              style={{
-                backgroundColor: colors.gold,
-                color:
-                  theme === "dark"
-                    ? DARK_COLORS.lightText
-                    : LIGHT_COLORS.lightBg,
-              }}
-            >
-              Get Started
-            </button>
           </div>
 
           <div className="lg:hidden flex items-center gap-3">

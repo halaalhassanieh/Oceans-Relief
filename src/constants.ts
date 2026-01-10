@@ -7,6 +7,13 @@
   title: string;
   description: string;
 }
+ export const moodButtons: { mood: ReliefMood | 'all'; label: string; emoji: string }[] = [
+  { mood: 'all', label: 'All', emoji: '🌊' },
+  { mood: 'calm', label: 'Calm', emoji: '☀️' },
+  { mood: 'deep', label: 'Deep', emoji: '🌀' },
+  { mood: 'storm', label: 'Storm', emoji: '⛈️' },
+  { mood: 'night', label: 'Night', emoji: '🌙' },
+];
 
 interface FooterSection {
   title: string;
@@ -89,18 +96,51 @@ export const musicSuggestions: MusicSuggestion[] = [
 
 
 
-
 export const FEATURES: Feature[] = [
-  { icon: "⚡", title: "Lightning Fast", description: "Optimized performance for the best user experience" },
-  { icon: "🎨", title: "Beautiful Design", description: "Stunning visuals that captivate your audience" },
-  { icon: "🔒", title: "Secure", description: "Enterprise-grade security for your peace of mind" },
-  { icon: "📱", title: "Responsive", description: "Perfect experience on any device or screen size" },
-  { icon: "🚀", title: "Scalable", description: "Grows with your business needs seamlessly" },
-  { icon: "💎", title: "Premium Quality", description: "Attention to detail in every aspect" }
+  { 
+    icon: "🌊", 
+    title: "Calm Waves", 
+    description: "Immerse yourself in a peaceful and soothing ocean experience" 
+  },
+  { 
+    icon: "🎵", 
+    title: "Curated Music", 
+    description: "Hand-picked music suggestions to match your mood and relax" 
+  },
+  { 
+    icon: "🛡️", 
+    title: "Safe & Private", 
+    description: "Your data and preferences are protected with care" 
+  },
+  { 
+    icon: "📱", 
+    title: "Responsive Design", 
+    description: "Enjoy the calm experience on any device, anytime" 
+  },
+  { 
+    icon: "✨", 
+    title: "Mood Tracking", 
+    description: "Tailored suggestions based on your current mood and vibe" 
+  },
+  { 
+    icon: "💡", 
+    title: "Mindful Tips", 
+    description: "Small prompts and tips to enhance relaxation and focus" 
+  }
 ];
 
+
 export const FOOTER_SECTIONS: FooterSection[] = [
-  { title: "Product", links: ["Features", "Pricing", "Updates"] },
-  { title: "Company", links: ["About", "Careers", "Blog"] },
-  { title: "Connect", links: ["Twitter", "LinkedIn", "GitHub"] },
+  {
+    title: "Home",
+    links: ["Features"]
+  },
+  {
+    title: "Find Relief",
+    links: ["Messages", "Music", "Release"]
+  },
+  {
+    title: "About & Contact",
+    links: ["Twitter", "LinkedIn", "GitHub"]
+  },
 ];

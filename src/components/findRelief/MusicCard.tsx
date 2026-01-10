@@ -1,9 +1,9 @@
 
 import { motion } from "framer-motion";
 
-import { DARK_COLORS, LIGHT_COLORS, MOOD_COLORS } from "../Configuration";
-import type { MusicSuggestion } from "../constants";
-import type { ThemeMode } from "../types";
+import { DARK_COLORS, LIGHT_COLORS, MOOD_COLORS } from "../../Configuration";
+import type { MusicSuggestion } from "../../constants";
+import type { ThemeMode } from "../../types";
 
 
 

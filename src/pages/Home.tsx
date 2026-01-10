@@ -66,7 +66,7 @@ const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNavigate }
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 ">
         <motion.h2
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

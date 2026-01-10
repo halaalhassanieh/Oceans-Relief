@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
   const colors = getColors(theme);
   
   return (
-    <footer className="border-t backdrop-blur py-12"
+    <footer className="border-t backdrop-blur py-6"
       style={{ 
         backgroundColor: theme === 'dark' ? 'rgba(26, 41, 63, 0.6)' : 'rgba(255, 255, 255, 0.6)',
         borderColor: colors.borderColor
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             </div>
           ))}
         </div> 
-        <div className="border-t pt-8 text-center text-sm"
+        <div className="border-t pt-6 text-center text-sm"
           style={{ borderColor: colors.borderColor, color: colors.mutedText, opacity: 0.6 }}>
           © 2026 OceansRelief. All rights reserved.
         </div>
