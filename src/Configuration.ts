@@ -40,9 +40,8 @@ export const FADE_ANIMATION_CONFIG = {
   yDistance: -100,
 } as const;
 
-
 export const MOOD_COLORS = {
-  calm: { bg: 'rgba(137, 111, 61, 0.1)', border: 'rgba(137, 111, 61, 0.3)', text: '#896f3d' },
+   calm: { bg: 'rgba(137, 111, 61, 0.1)', border: 'rgba(137, 111, 61, 0.3)', text: '#896f3d' },
   deep: { bg: 'rgba(64, 71, 81, 0.2)', border: 'rgba(64, 71, 81, 0.4)', text: '#404751' },
   storm: { bg: 'rgba(26, 41, 63, 0.2)', border: 'rgba(26, 41, 63, 0.4)', text: '#1a293f' },
   night: { bg: 'rgba(16, 33, 52, 0.2)', border: 'rgba(16, 33, 52, 0.4)', text: '#102134' },

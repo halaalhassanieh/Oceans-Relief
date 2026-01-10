@@ -7,21 +7,6 @@ import { DARK_COLORS, LIGHT_COLORS, PAGE_TRANSITIONS } from "../Configuration";
 import type { PageType } from "../types";
 
 
-
-
-
-// const Home = () => {
-//   return (
-//     <div>
-
-//       <Outlet/>
-//     </div>
-//   )
-// }
-
-// export default Home
-
-
 // ============================================================================
 // PAGE: Home
 // ============================================================================
@@ -48,7 +33,7 @@ const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNavigate }
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 px-4"
             style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
             Welcome to
-            <span className="block mt-2 sm:mt-4" style={{ color: colors.gold }}> Oceans Relief</span>
+            <span className="block mt-2 sm:mt-4" style={{ color: colors.gold }}>Oceans Relief</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -112,4 +97,5 @@ const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNavigate }
     </motion.div>
   );
 };
+
 export default Home;

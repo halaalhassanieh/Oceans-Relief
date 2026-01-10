@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { getColors, useTheme } from '../components/ThemeToggle';
 import { musicSuggestions, reliefCards, TagLines, type ReliefMood } from '../constants';
 import { DARK_COLORS, LIGHT_COLORS, MOOD_COLORS, PAGE_TRANSITIONS } from '../Configuration';
+import MusicCard from '../components/MusicCard';
 
 
 
@@ -11,12 +12,13 @@ import { DARK_COLORS, LIGHT_COLORS, MOOD_COLORS, PAGE_TRANSITIONS } from '../Con
 // PAGE: Find Relief
 // ============================================================================
 
-const FindRelief = () => {
+const FindRelief: React.FC = () => {
   const { theme } = useTheme();
   const colors = getColors(theme);
   const [selectedMood, setSelectedMood] = useState<ReliefMood | 'all'>('all');
   const [activeTab, setActiveTab] = useState<'messages' | 'music'>('messages');
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
+  const [selectedMusicCard, setSelectedMusicCard] = useState<number | null>(null);
   
   const filteredCards = selectedMood === 'all' 
     ? reliefCards 
@@ -146,6 +148,19 @@ const FindRelief = () => {
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {filteredCards.map((card, i) => {
               const isFlipped = flippedCards.has(card.id);
+              const cardStyles = [
+                { gradient: 'linear-gradient(135deg, rgba(137, 111, 61, 0.15), rgba(64, 71, 81, 0.15))' },
+                { gradient: 'linear-gradient(135deg, rgba(64, 71, 81, 0.15), rgba(16, 33, 52, 0.15))' },
+                { gradient: 'linear-gradient(135deg, rgba(16, 33, 52, 0.15), rgba(137, 111, 61, 0.15))' },
+                { gradient: 'linear-gradient(135deg, rgba(137, 111, 61, 0.15), rgba(26, 41, 63, 0.15))' },
+              ];
+              const style = cardStyles[i % cardStyles.length];
+              const moodIcons = {
+                calm: '☀️',
+                deep: '🌀',
+                storm: '⛈️',
+                night: '🌙'
+              };
               
               return (
                 <motion.div
@@ -153,7 +168,7 @@ const FindRelief = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.03 }}
-                  className="relative h-64 cursor-pointer"
+                  className="relative h-64 cursor-pointer group"
                   style={{ perspective: '1000px' }}
                   onClick={() => handleCardFlip(card.id)}>
                   
@@ -163,30 +178,35 @@ const FindRelief = () => {
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
                     transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}>
                     
-                    {/* Card Back (Number) */}
+                    {/* Card Back */}
                     <div
-                      className="absolute inset-0 rounded-2xl border-2 backdrop-blur flex flex-col items-center justify-center"
+                      className="absolute inset-0 rounded-2xl border-2 backdrop-blur flex flex-col items-center justify-center p-6 group-hover:border-opacity-100 transition-all"
                       style={{
                         backfaceVisibility: 'hidden',
-                        backgroundColor: colors.cardBg,
-                        borderColor: colors.gold,
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                        background: theme === 'dark'
-                          ? `linear-gradient(135deg, ${DARK_COLORS.mediumNavy}, ${DARK_COLORS.darkNavy})`
-                          : `linear-gradient(135deg, ${LIGHT_COLORS.mediumBg}, ${LIGHT_COLORS.lightBg})`
+                        background: style.gradient,
+                        borderColor: colors.borderColor,
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
                       }}>
-                      <div className="text-7xl font-bold mb-3" style={{ color: colors.gold }}>
-                        {card.id}
+                      
+                      {/* Mood Icon - Large and Centered */}
+                      <div className="text-7xl mb-4 group-hover:scale-110 transition-transform">
+                        {moodIcons[card.mood]}
                       </div>
-                      <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: colors.mutedText }}>
+                      
+                      {/* Tap to Reveal Text */}
+                      <div className="text-xs font-semibold uppercase tracking-wider text-center" 
+                        style={{ color: colors.mutedText }}>
                         Tap to Reveal
                       </div>
-                      <div className="absolute top-4 right-4 text-2xl">
-                        {card.mood === 'calm' && '☀️'}
-                        {card.mood === 'deep' && '🌀'}
-                        {card.mood === 'storm' && '⛈️'}
-                        {card.mood === 'night' && '🌙'}
-                      </div>
+                      
+                      {/* Decorative Wave Pattern */}
+                      <div className="absolute bottom-0 left-0 right-0 h-16 opacity-10"
+                        style={{
+                          background: 'repeating-linear-gradient(90deg, transparent, transparent 10px, currentColor 10px, currentColor 20px)',
+                          clipPath: 'polygon(0 50%, 100% 50%, 100% 100%, 0 100%)',
+                          color: colors.gold
+                        }}
+                      />
                     </div>
                     
                     {/* Card Front (Message) */}
@@ -223,47 +243,191 @@ const FindRelief = () => {
         )}
 
         {activeTab === 'music' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredMusic.map((music, i) => (
-              <motion.div
-                key={music.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="p-6 rounded-2xl border backdrop-blur cursor-pointer"
-                style={{ 
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.borderColor,
-                  borderTopWidth: 4,
-                  borderTopColor: MOOD_COLORS[music.mood].text
+          <div className="max-w-7xl mx-auto">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-base text-center mb-8"
+              style={{ color: colors.mutedText }}>
+              Select a card and tap to reveal the song suggestion 🎵
+            </motion.p>
+            
+            {/* Carousel Container */}
+            <div className="relative flex items-center justify-center gap-8 py-12 px-4 min-h-125">
+              
+              {/* Left Arrow Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  const currentIndex = filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id));
+                  const prevIndex = (currentIndex - 1 + filteredMusic.length) % filteredMusic.length;
+                  setSelectedMusicCard(filteredMusic[prevIndex].id);
+                  setFlippedCards(new Set());
+                }}
+                className="absolute left-4 z-20 w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md border-2 hover:shadow-xl transition shadow-lg"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(64, 71, 81, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+                  borderColor: colors.gold,
+                  color: colors.gold
                 }}>
-                <div className="text-4xl mb-3">🎵</div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
-                  {music.song}
-                </h3>
-                <p className="text-sm mb-3" style={{ color: colors.mutedText }}>
-                  by {music.artist}
-                </p>
-                <p className="text-base italic leading-relaxed" style={{ color: colors.mutedText }}>
-                  "{music.line}"
-                </p>
-                <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold"
-                  style={{ 
-                    backgroundColor: MOOD_COLORS[music.mood].bg,
-                    color: MOOD_COLORS[music.mood].text
-                  }}>
-                  {music.mood}
-                </div>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                </svg>
+              </motion.button>
+              
+              {/* Left Card */}
+              <motion.div
+                key={`left-${filteredMusic[(filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id)) - 1 + filteredMusic.length) % filteredMusic.length].id}`}
+                initial={{ scale: 0.7, opacity: 0, x: -100, rotateY: -25 }}
+                animate={{ 
+                  scale: 0.8,
+                  opacity: 0.5,
+                  x: -40,
+                  rotateY: -15
+                }}
+                exit={{ scale: 0.7, opacity: 0, x: 100, rotateY: 25 }}
+                transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}
+                className="cursor-pointer"
+                style={{ 
+                  perspective: '1500px',
+                  width: '220px',
+                  height: '340px'
+                }}
+                onClick={() => {
+                  const currentIndex = filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id));
+                  const prevIndex = (currentIndex - 1 + filteredMusic.length) % filteredMusic.length;
+                  setSelectedMusicCard(filteredMusic[prevIndex].id);
+                  setFlippedCards(new Set());
+                }}>
+                <MusicCard 
+                  music={filteredMusic[(filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id)) - 1 + filteredMusic.length) % filteredMusic.length]}
+                  isCenter={false}
+                  isFlipped={false}
+                  onFlip={() => {}}
+                  theme={theme}
+                  colors={colors}
+                />
               </motion.div>
-            ))}
-          </motion.div>
+              
+              {/* Center Card (Active) */}
+              <motion.div
+                key={`center-${filteredMusic[filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id))].id}`}
+                initial={{ scale: 0.8, opacity: 0.5 }}
+                animate={{ 
+                  scale: 1,
+                  opacity: 1,
+                  x: 0,
+                  rotateY: 0
+                }}
+                exit={{ scale: 0.8, opacity: 0.5 }}
+                transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}
+                className="cursor-pointer z-10"
+                style={{ 
+                  perspective: '1500px',
+                  width: '280px',
+                  height: '420px'
+                }}>
+                <MusicCard 
+                  music={filteredMusic[filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id))]}
+                  isCenter={true}
+                  isFlipped={flippedCards.has((selectedMusicCard || filteredMusic[0].id) + 1000)}
+                  onFlip={(id) => handleCardFlip(id + 1000)}
+                  theme={theme}
+                  colors={colors}
+                />
+              </motion.div>
+              
+              {/* Right Card */}
+              <motion.div
+                key={`right-${filteredMusic[(filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id)) + 1) % filteredMusic.length].id}`}
+                initial={{ scale: 0.7, opacity: 0, x: 100, rotateY: 25 }}
+                animate={{ 
+                  scale: 0.8,
+                  opacity: 0.5,
+                  x: 40,
+                  rotateY: 15
+                }}
+                exit={{ scale: 0.7, opacity: 0, x: -100, rotateY: -25 }}
+                transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}
+                className="cursor-pointer"
+                style={{ 
+                  perspective: '1500px',
+                  width: '220px',
+                  height: '340px'
+                }}
+                onClick={() => {
+                  const currentIndex = filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id));
+                  const nextIndex = (currentIndex + 1) % filteredMusic.length;
+                  setSelectedMusicCard(filteredMusic[nextIndex].id);
+                  setFlippedCards(new Set());
+                }}>
+                <MusicCard 
+                  music={filteredMusic[(filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id)) + 1) % filteredMusic.length]}
+                  isCenter={false}
+                  isFlipped={false}
+                  onFlip={() => {}}
+                  theme={theme}
+                  colors={colors}
+                />
+              </motion.div>
+              
+              {/* Right Arrow Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  const currentIndex = filteredMusic.findIndex(m => m.id === (selectedMusicCard || filteredMusic[0].id));
+                  const nextIndex = (currentIndex + 1) % filteredMusic.length;
+                  setSelectedMusicCard(filteredMusic[nextIndex].id);
+                  setFlippedCards(new Set());
+                }}
+                className="absolute right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md border-2 hover:shadow-xl transition shadow-lg"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(64, 71, 81, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+                  borderColor: colors.gold,
+                  color: colors.gold
+                }}>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.button>
+            </div>
+            
+            {/* Navigation Dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {filteredMusic.map((music) => (
+                <button
+                  key={music.id}
+                  onClick={() => {
+                    setSelectedMusicCard(music.id);
+                    setFlippedCards(new Set());
+                  }}
+                  className="w-2 h-2 rounded-full transition-all"
+                  style={{
+                    backgroundColor: (selectedMusicCard || filteredMusic[0].id) === music.id ? colors.gold : colors.mutedText,
+                    opacity: (selectedMusicCard || filteredMusic[0].id) === music.id ? 1 : 0.3,
+                    transform: (selectedMusicCard || filteredMusic[0].id) === music.id ? 'scale(1.5)' : 'scale(1)'
+                  }}
+                />
+              ))}
+            </div>
+            
+            {/* Navigation Instructions */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-center mt-6 text-sm"
+              style={{ color: colors.mutedText }}>
+              Use arrows or click side cards to navigate • Tap center card to reveal
+            </motion.div>
+          </div>
         )}
       </div>
     </motion.div>
   );
 };
+
 export default FindRelief ;

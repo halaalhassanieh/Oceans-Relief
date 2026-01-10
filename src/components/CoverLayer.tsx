@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { motion} from 'framer-motion';
 import { getColors, useTheme } from './ThemeToggle';
 import { TagLines } from '../constants';
 import { DARK_COLORS, FADE_ANIMATION_CONFIG } from '../Configuration';
+
 
 
 
@@ -19,7 +20,7 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
   const [isTyping, setIsTyping] = useState(true);
   
   // Typing animation effect
-  useEffect(() => {
+  React.useEffect(() => {
     const currentTagline = TagLines[currentTaglineIndex];
     
     if (isTyping) {
@@ -62,7 +63,7 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       }}
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{ 
-        backgroundImage: 'url(assets/ocean.jfif)',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2026&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -150,4 +151,5 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
     </motion.div>
   );
 };
+
 export default CoverLayer;
