@@ -16,10 +16,6 @@ export const useTheme = (): ThemeContextType => {
   return context;
 };
 
-// ============================================================================
-// COMPONENT: Theme Toggle
-// ============================================================================
-
 
 
 interface ThemeContextType {

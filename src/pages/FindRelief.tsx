@@ -6,8 +6,10 @@ import { DARK_COLORS, LIGHT_COLORS, PAGE_TRANSITIONS } from '../Configuration';
 import MusicCarousel from '../components/findRelief/MusicCarousel';
 import ReliefCard from '../components/findRelief/ReliefCard';
 import ReleaseEmotions from '../components/findRelief/ReleaseEmotions';
+import TabButton from '../components/findRelief/TapButton';
 
-const FindRelief: React.FC = () => {
+
+const FindRelief = () => {
   const { theme } = useTheme();
   const colors = getColors(theme);
 
@@ -15,10 +17,16 @@ const FindRelief: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'messages' | 'music' | 'release'>('messages');
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
 
-  const filteredCards = selectedMood === 'all' ? reliefCards : reliefCards.filter(c => c.mood === selectedMood);
-  const filteredMusic = selectedMood === 'all' ? musicSuggestions : musicSuggestions.filter(m => m.mood === selectedMood);
+  const filteredCards =
+    selectedMood === 'all'
+      ? reliefCards
+      : reliefCards.filter(c => c.mood === selectedMood);
 
- 
+  const filteredMusic =
+    selectedMood === 'all'
+      ? musicSuggestions
+      : musicSuggestions.filter(m => m.mood === selectedMood);
+
   const handleCardFlip = (cardId: number) => {
     setFlippedCards(prev => {
       const newSet = new Set(prev);
@@ -71,6 +79,7 @@ const FindRelief: React.FC = () => {
             colors={colors}
             onClick={() => setActiveTab('messages')}
           />
+
           <TabButton
             label="Music Suggestions"
             active={activeTab === 'music'}
@@ -78,6 +87,7 @@ const FindRelief: React.FC = () => {
             colors={colors}
             onClick={() => setActiveTab('music')}
           />
+
           <TabButton
             label="Release Your Emotions"
             active={activeTab === 'release'}
@@ -102,9 +112,12 @@ const FindRelief: React.FC = () => {
                 className="px-6 py-2 rounded-full font-medium transition hover:scale-105"
                 style={{
                   backgroundColor: selectedMood === mood ? colors.gold : colors.cardBg,
-                  color: selectedMood === mood
-                    ? (theme === 'dark' ? DARK_COLORS.lightText : LIGHT_COLORS.lightBg)
-                    : colors.mutedText,
+                  color:
+                    selectedMood === mood
+                      ? theme === 'dark'
+                        ? DARK_COLORS.lightText
+                        : LIGHT_COLORS.lightBg
+                      : colors.mutedText,
                   borderWidth: 2,
                   borderColor: selectedMood === mood ? colors.gold : colors.borderColor
                 }}
@@ -136,28 +149,12 @@ const FindRelief: React.FC = () => {
           <MusicCarousel musicList={filteredMusic} colors={colors} theme={theme} />
         )}
 
-        {activeTab === 'release' && <ReleaseEmotions colors={colors} theme={theme} />}
+        {activeTab === 'release' && (
+          <ReleaseEmotions colors={colors} theme={theme} />
+        )}
       </div>
     </motion.div>
   );
 };
 
 export default FindRelief;
-
-// ==================================
-// Tab Button Component
-// ==================================
-const TabButton = ({ label, active, theme, colors, onClick }: any) => (
-  <button
-    onClick={onClick}
-    className="px-6 py-3 rounded-full font-semibold transition"
-    style={{
-      backgroundColor: active ? colors.gold : colors.cardBg,
-      color: active ? (theme === 'dark' ? DARK_COLORS.lightText : LIGHT_COLORS.lightBg) : colors.mutedText,
-      borderWidth: 2,
-      borderColor: active ? colors.gold : colors.borderColor
-    }}
-  >
-    {label}
-  </button>
-);

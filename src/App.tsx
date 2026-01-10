@@ -1,11 +1,5 @@
 
 import './App.css'
-// import {
-//   createBrowserRouter,
-//   RouterProvider,
-// } from "react-router-dom";
-
-
 import { useState } from 'react';
 import {  AnimatePresence } from 'framer-motion';
 import type { PageType, ThemeMode } from './types';
@@ -18,9 +12,6 @@ import About from './pages/About';
 import Footer from './components/Footer';
 import CoverLayer from './components/CoverLayer';
 
-// ============================================================================
-// MAIN APP COMPONENT
-// ============================================================================
 
  function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(false);

@@ -1,170 +1,189 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import MusicCard from './MusicCard';
+import { DARK_COLORS, LIGHT_COLORS } from '../../Configuration';
+import type { ThemeMode } from '../../types';
+import type { MusicSuggestion } from '../../constants';
 
-interface Props {
-  musicList: any[];
-  colors: any;
-  theme: string;
+interface MusicCarouselProps {
+  musicList: MusicSuggestion[];
+  theme: ThemeMode;
+  colors: typeof DARK_COLORS | typeof LIGHT_COLORS;
 }
 
-type Position = 'left' | 'center' | 'right';
-
-const MusicCarousel: React.FC<Props> = ({ musicList, colors, theme }) => {
-  const [activeId, setActiveId] = useState<number>(musicList[0]?.id);
+const MusicCarousel: React.FC<MusicCarouselProps> = ({ musicList, theme, colors }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [flipped, setFlipped] = useState<Set<number>>(new Set());
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
+// إضافة حالة جديدة لمؤشر النقاط
+const [activeDot, setActiveDot] = useState(0);
 
-  // Responsive detection
+// عند الانتقال للسهم التالي
+const goNext = () => {
+  setActiveIndex(nextIndex);
+  setActiveDot((prev) => (prev + 1) % 3); // ينقل اللون إلى النقطة التالية
+};
+
+// عند الانتقال للسهم السابق
+const goPrev = () => {
+  setActiveIndex(prevIndex);
+  setActiveDot((prev) => (prev + 2) % 3); // تتحرك عكس الاتجاه
+};
+
   useEffect(() => {
     const handleResize = () => {
-      const w = window.innerWidth;
-      setIsMobile(w < 640);
-      setIsTablet(w >= 640 && w < 1024);
+      setIsMobile(window.innerWidth < 640);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const activeIndex = useMemo(
-    () => musicList.findIndex(m => m.id === activeId),
-    [activeId, musicList]
-  );
-
   const prevIndex = (activeIndex - 1 + musicList.length) % musicList.length;
   const nextIndex = (activeIndex + 1) % musicList.length;
 
-  const goNext = () => {
-    setActiveId(musicList[nextIndex].id);
-    setFlipped(new Set());
-  };
-  const goPrev = () => {
-    setActiveId(musicList[prevIndex].id);
-    setFlipped(new Set());
-  };
+
   const toggleFlip = (id: number) => {
     const next = new Set(flipped);
     next.has(id) ? next.delete(id) : next.add(id);
     setFlipped(next);
   };
 
-  // Sizes based on screen
+  // Responsive sizes
   const centerSize = isMobile
-    ? { w: 240, h: 360 }
-    : isTablet
-    ? { w: 260, h: 390 }
+    ? { w: 200, h: 300 }
     : { w: 280, h: 420 };
-
-  const sideSize = isTablet
-    ? { w: 200, h: 320 }
+  const sideSize = isMobile
+    ? { w: 160, h: 240 }
     : { w: 220, h: 340 };
+
+  // Positions for smooth scaling
+  const leftX = isMobile ? -120 : -140;
+  const rightX = isMobile ? 120 : 140;
 
   return (
     <div className="max-w-7xl mx-auto">
-
-      <p className="text-center mb-8" style={{ color: colors.mutedText }}>
-        Select a card and tap to reveal the song suggestion 🎵
+      <p className="text-center mb-6" style={{ color: colors.mutedText }}>
+        Tap the center card to reveal a music suggestion 🎵
       </p>
 
-      <div className="relative flex items-center justify-center py-12 min-h-120 overflow-hidden">
-
-        {/* Left arrow - Always visible */}
+      <div className="relative flex items-center justify-center py-10 sm:min-h-120 min-h-90 ">
+        {/* Left Arrow */}
         <Arrow direction="left" onClick={goPrev} colors={colors} theme={theme} />
 
-        <div className="flex items-center justify-center gap-6">
-
-          {/* Left card */}
-          {!isMobile && (
-            <CarouselCard
-              key={`left-${musicList[prevIndex].id}`}
+        <div className="flex items-center justify-center gap-6 relative">
+          {/* Left Card */}
+          <motion.div
+            key={musicList[prevIndex].id}
+            initial={{ x: -200, scale: 0.7, opacity: 0.5 }}
+            animate={{ x: leftX, scale: 0.85, opacity: 0.6 }}
+            transition={{ type: 'spring', stiffness: 150, damping: 25 }}
+            style={{ width: sideSize.w, height: sideSize.h }}
+            className='flex items-center justify-center'
+          >
+            <MusicCard
               music={musicList[prevIndex]}
-              size={sideSize}
-              position="left"
-              onClick={goPrev}
+              isCenter={false}
+              isFlipped={false}
+              onFlip={() => {}}
               colors={colors}
               theme={theme}
             />
-          )}
+          </motion.div>
 
-          {/* Center card */}
-          <CarouselCard
-            key={`center-${musicList[activeIndex].id}`}
-            music={musicList[activeIndex]}
-            size={centerSize}
-            position="center"
-            isCenter
-            isFlipped={flipped.has(musicList[activeIndex].id)}
-            onFlip={() => toggleFlip(musicList[activeIndex].id)}
-            colors={colors}
-            theme={theme}
-          />
+          {/* Center Card */}
+          <motion.div
+            key={musicList[activeIndex].id}
+            initial={{ scale: 0.8, opacity: 0.7 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ type: 'spring', stiffness: 160, damping: 28 }}
+            style={{ width: centerSize.w, height: centerSize.h, zIndex: 10 }}
+            className='flex items-center justify-center'
+          >
+            <MusicCard
+              music={musicList[activeIndex]}
+              isCenter
+              isFlipped={flipped.has(musicList[activeIndex].id)}
+              onFlip={() => toggleFlip(musicList[activeIndex].id)}
+              colors={colors}
+              theme={theme}
+            />
+          </motion.div>
 
-          {/* Right card */}
-          {!isMobile && (
-            <CarouselCard
-              key={`right-${musicList[nextIndex].id}`}
+          {/* Right Card */}
+          <motion.div
+            key={musicList[nextIndex].id}
+            initial={{ x: 200, scale: 0.7, opacity: 0.5 }}
+            animate={{ x: rightX, scale: 0.85, opacity: 0.6 }}
+            transition={{ type: 'spring', stiffness: 150, damping: 25 }}
+            style={{ width: sideSize.w, height: sideSize.h }}
+            className='flex items-center justify-center'
+          >
+            <MusicCard
               music={musicList[nextIndex]}
-              size={sideSize}
-              position="right"
-              onClick={goNext}
+              isCenter={false}
+              isFlipped={false}
+              onFlip={() => {}}
               colors={colors}
               theme={theme}
             />
-          )}
-
+          </motion.div>
         </div>
 
-        {/* Right arrow - Always visible */}
+        {/* Right Arrow */}
         <Arrow direction="right" onClick={goNext} colors={colors} theme={theme} />
-
       </div>
 
-      {/* Dots */}
-      <div className="flex justify-center gap-2 mt-6">
-        {musicList.map(m => (
-          <button
-            key={m.id}
-            onClick={() => {
-              setActiveId(m.id);
-              setFlipped(new Set());
-            }}
-            className="w-2 h-2 rounded-full transition-all"
-            style={{
-              backgroundColor: activeId === m.id ? colors.gold : colors.mutedText,
-              opacity: activeId === m.id ? 1 : 0.3,
-              transform: activeId === m.id ? 'scale(1.5)' : 'scale(1)'
-            }}
-          />
-        ))}
-      </div>
+{/* Dots */}
+<div className="flex justify-center gap-2 mt-4">
+  {[0, 1, 2].map((dotIdx) => (
+    <motion.div
+      key={dotIdx}
+      layout
+      className="rounded-full"
+      style={{
+        width: activeDot === dotIdx ? 12 : 8,
+        height: activeDot === dotIdx ? 12 : 8,
+        backgroundColor: activeDot === dotIdx ? colors.gold : colors.mutedText,
+        opacity: activeDot === dotIdx ? 1 : 0.4,
+      }}
+      transition={{ type: 'spring', stiffness: 160, damping: 28 }}
+    />
+  ))}
+</div>
+
+
 
       <p className="text-center mt-4 text-sm" style={{ color: colors.mutedText }}>
-        Swipe arrows or tap side cards • Tap center to reveal
+        Navigate using arrows • Tap center to flip
       </p>
-
     </div>
   );
 };
 
 export default MusicCarousel;
 
-// =======================================
-// Sub Components
-// =======================================
-const Arrow = ({ direction, onClick, colors, theme }: any) => {
+// Arrow component (unchanged, as in your original)
+const Arrow = ({
+  direction,
+  onClick,
+  theme,
+  colors
+}: {
+  direction: 'left' | 'right';
+  onClick: () => void;
+  theme: ThemeMode;
+  colors: typeof DARK_COLORS | typeof LIGHT_COLORS;
+}) => {
   const isLeft = direction === 'left';
   return (
     <motion.button
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      className={`absolute ${isLeft ? 'left-4' : 'right-4'} z-20 w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md border-2 shadow-lg`}
+      className={`absolute ${isLeft ? 'left-1' : 'right-1'} z-20 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border-2 shadow-lg`}
       style={{
-        backgroundColor: theme === 'dark'
-          ? 'rgba(64,71,81,0.8)'
-          : 'rgba(255,255,255,0.9)',
+        backgroundColor: theme === 'dark' ? 'rgba(64,71,81,0.8)' : 'rgba(255,255,255,0.9)',
         borderColor: colors.gold,
         color: colors.gold
       }}
@@ -177,52 +196,5 @@ const Arrow = ({ direction, onClick, colors, theme }: any) => {
         )}
       </svg>
     </motion.button>
-  );
-};
-
-const CarouselCard = ({
-  music,
-  size,
-  position = 'center' as Position,
-  isCenter = false,
-  isFlipped = false,
-  onFlip,
-  onClick,
-  colors,
-  theme
-}: any) => {
-  const variants: Record<Position, any> = {
-    left: { scale: 0.8, opacity: 0.5, x: -40, rotateY: -15 },
-    center: { scale: 1, opacity: 1, x: 0, rotateY: 0 },
-    right: { scale: 0.8, opacity: 0.5, x: 40, rotateY: 15 }
-  };
-
-  const safePosition: Position = (position === 'left' || position === 'center' || position === 'right')
-    ? position
-    : 'center';
-
-  return (
-    <motion.div
-      initial={{ scale: 0.7, opacity: 0 }}
-      animate={variants[safePosition]}
-      transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}
-      style={{
-        width: size.w,
-        height: size.h,
-        perspective: '1500px',
-        cursor: 'pointer',
-        zIndex: isCenter ? 10 : 1
-      }}
-      onClick={onClick}
-    >
-      <MusicCard
-        music={music}
-        isCenter={isCenter}
-        isFlipped={isFlipped}
-        onFlip={onFlip}
-        colors={colors}
-        theme={theme}
-      />
-    </motion.div>
   );
 };

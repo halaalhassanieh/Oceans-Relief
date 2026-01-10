@@ -1,5 +1,7 @@
-// MoodFilter.tsx
+
 import { DARK_COLORS, LIGHT_COLORS } from '../../Configuration';
+
+
 
 const moods = [
   { mood: 'all', label: 'All', emoji: '🌊' },
@@ -8,6 +10,9 @@ const moods = [
   { mood: 'storm', label: 'Storm', emoji: '⛈️' },
   { mood: 'night', label: 'Night', emoji: '🌙' },
 ];
+
+
+
 
 const MoodFilter = ({ selectedMood, onChange, colors, theme }: any) => {
   return (

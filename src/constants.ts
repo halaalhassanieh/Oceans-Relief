@@ -18,6 +18,7 @@
 interface FooterSection {
   title: string;
   links: string[];
+  key:string;
 }
 
 export const TagLines: readonly string[] = [
@@ -133,14 +134,17 @@ export const FEATURES: Feature[] = [
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
     title: "Home",
-    links: ["Features"]
+    links: ["Features"],
+    key:"home",
   },
   {
     title: "Find Relief",
-    links: ["Messages", "Music", "Release"]
+    links: ["Messages", "Music", "Release"],
+    key:"relief",
   },
   {
     title: "About & Contact",
-    links: ["Twitter", "LinkedIn", "GitHub"]
+    links: ["Twitter", "LinkedIn", "GitHub"],
+    key:"about",
   },
 ];

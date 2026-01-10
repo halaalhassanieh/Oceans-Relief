@@ -1,5 +1,10 @@
-// ReliefTabs.tsx
+
 import { DARK_COLORS, LIGHT_COLORS } from '../../Configuration';
+
+
+
+
+
 
 const ReliefTabs = ({ activeTab, onChange, colors, theme }: any) => {
   const renderButton = (key: 'messages' | 'music', label: string) => (

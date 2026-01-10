@@ -1,22 +1,28 @@
 import { motion } from 'framer-motion';
 import { MOOD_COLORS } from '../../Configuration';
 
-interface ReliefCardProps {
-  card: any;
+type ReliefCardProps = {
+  card: {
+    id: number;
+    title: string;
+    text: string;
+    mood: 'calm' | 'deep' | 'storm' | 'night';
+  };
   index?: number;
   isFlipped: boolean;
   onFlip: () => void;
-  colors: any;
-  theme: string;
-}
+  colors: {
+    cardBg: string;
+    borderColor: string;
+    mutedText: string;
+    lightText: string;
+    darkText: string;
+    gold: string;
+  };
+  theme: 'dark' | 'light';
+};
 
-const ReliefCard: React.FC<ReliefCardProps> = ({
-  card,
-  isFlipped,
-  onFlip,
-  colors,
-  theme
-}) => {
+const ReliefCard = ({ card, isFlipped, onFlip, colors, theme }: ReliefCardProps) => {
   // Gradient backgrounds (cycled)
   const cardStyles = [
     { gradient: 'linear-gradient(135deg, rgba(137, 111, 61, 0.15), rgba(64, 71, 81, 0.15))' },
@@ -31,13 +37,13 @@ const ReliefCard: React.FC<ReliefCardProps> = ({
     calm: '☀️',
     deep: '🌀',
     storm: '⛈️',
-    night: '🌙'
+    night: '🌙',
   };
 
-  const moodColor = MOOD_COLORS[card.mood as keyof typeof MOOD_COLORS] || {
+  const moodColor = MOOD_COLORS[card.mood] || {
     bg: colors.cardBg,
     border: colors.borderColor,
-    text: colors.mutedText
+    text: colors.mutedText,
   };
 
   return (
@@ -59,22 +65,27 @@ const ReliefCard: React.FC<ReliefCardProps> = ({
             backfaceVisibility: 'hidden',
             background: style.gradient,
             borderColor: colors.borderColor,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
           }}
         >
           <div className="text-7xl mb-4 group-hover:scale-110 transition-transform">
             {moodIcons[card.mood]}
           </div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-center" 
-            style={{ color: colors.mutedText }}>
+          <div
+            className="text-xs font-semibold uppercase tracking-wider text-center"
+            style={{ color: colors.mutedText }}
+          >
             Tap to Reveal a message for you
           </div>
+
           {/* Decorative Wave */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 opacity-10"
+          <div
+            className="absolute bottom-0 left-0 right-0 h-16 opacity-10"
             style={{
-              background: 'repeating-linear-gradient(90deg, transparent, transparent 10px, currentColor 10px, currentColor 20px)',
+              background:
+                'repeating-linear-gradient(90deg, transparent, transparent 10px, currentColor 10px, currentColor 20px)',
               clipPath: 'polygon(0 50%, 100% 50%, 100% 100%, 0 100%)',
-              color: colors.gold
+              color: colors.gold,
             }}
           />
         </div>
@@ -89,19 +100,23 @@ const ReliefCard: React.FC<ReliefCardProps> = ({
             borderColor: colors.borderColor,
             borderLeftWidth: 4,
             borderLeftColor: moodColor.text,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
           }}
         >
-          <h3 className="text-lg font-bold mb-3" style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}>
+          <h3
+            className="text-lg font-bold mb-3"
+            style={{ color: theme === 'dark' ? colors.lightText : colors.darkText }}
+          >
             {card.title}
           </h3>
           <p className="text-sm leading-relaxed grow" style={{ color: colors.mutedText }}>
             {card.text}
           </p>
-          <div className="mt-3 inline-block self-start px-3 py-1 rounded-full text-xs font-semibold"
-            style={{ 
+          <div
+            className="mt-3 inline-block self-start px-3 py-1 rounded-full text-xs font-semibold"
+            style={{
               backgroundColor: moodColor.bg,
-              color: moodColor.text
+              color: moodColor.text,
             }}
           >
             {card.mood}

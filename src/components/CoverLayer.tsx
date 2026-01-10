@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import  { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getColors, useTheme } from './ThemeToggle';
 import { TagLines } from '../constants';
 import { DARK_COLORS, FADE_ANIMATION_CONFIG } from '../Configuration';
-import img from '/assets/ocean.jpg'
-// ============================================================================
-// COMPONENT: Cover Layer
-// ============================================================================
+import img from '/assets/ocean.jpg';
 
-const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
+type CoverLayerProps = {
+  onEnter: () => void;
+};
+
+function CoverLayer({ onEnter }: CoverLayerProps) {
   const { theme } = useTheme();
   const colors = getColors(theme);
+
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
 
   // Typing animation effect
-  React.useEffect(() => {
+  useEffect(() => {
     const currentTagline = TagLines[currentTaglineIndex];
 
     if (isTyping) {
@@ -51,7 +53,10 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       exit={{
         y: `${FADE_ANIMATION_CONFIG.yDistance}%`,
         opacity: 0,
-        transition: { duration: FADE_ANIMATION_CONFIG.duration, ease: FADE_ANIMATION_CONFIG.ease }
+        transition: {
+          duration: FADE_ANIMATION_CONFIG.duration,
+          ease: FADE_ANIMATION_CONFIG.ease
+        }
       }}
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
@@ -65,10 +70,14 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       <div
         className="absolute inset-0"
         style={{
-          backgroundColor: theme === 'dark' ? 'rgba(10, 20, 40, 0.4)' : 'rgba(16, 33, 52, 0.35)',
+          backgroundColor:
+            theme === 'dark'
+              ? 'rgba(10, 20, 40, 0.4)'
+              : 'rgba(16, 33, 52, 0.35)',
           backdropFilter: 'blur(2px)'
         }}
       />
+
       <div
         className="absolute inset-0"
         style={{
@@ -93,7 +102,8 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6"
           style={{
             color: colors.lightText,
-            textShadow: '3px 3px 30px rgba(0,0,0,0.35), 0 0 40px rgba(26, 41, 63, 0.35)'
+            textShadow:
+              '3px 3px 30px rgba(0,0,0,0.35), 0 0 40px rgba(26, 41, 63, 0.35)'
           }}
         >
           Dive in to start
@@ -101,14 +111,14 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
             className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-3 sm:mt-4"
             style={{
               color: colors.gold,
-              textShadow: '2px 2px 20px rgba(0,0,0,0.35), 0 0 30px rgba(137, 111, 61, 0.25)'
+              textShadow:
+                '2px 2px 20px rgba(0,0,0,0.35), 0 0 30px rgba(137, 111, 61, 0.25)'
             }}
           >
             Your Journey
           </span>
         </motion.h1>
 
-        {/* Typing tagline */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -123,13 +133,11 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
           <span
             className="inline-block w-1 h-6 ml-1 animate-pulse"
             style={{
-              backgroundColor: colors.gold,
-              animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+              backgroundColor: colors.gold
             }}
           />
         </motion.div>
 
-        {/* Enter Button */}
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -142,7 +150,8 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
             backgroundColor: colors.gold,
             color: DARK_COLORS.lightText,
             borderColor: 'rgba(137, 111, 61, 0.25)',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.35), 0 0 20px rgba(137, 111, 61, 0.25)'
+            boxShadow:
+              '0 10px 40px rgba(0,0,0,0.35), 0 0 20px rgba(137, 111, 61, 0.25)'
           }}
         >
           Come with me 🌊
@@ -160,6 +169,6 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       />
     </motion.div>
   );
-};
+}
 
 export default CoverLayer;

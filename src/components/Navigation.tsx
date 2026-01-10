@@ -1,19 +1,15 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { PageType,NavigationProps } from "../types";
+import type { PageType, NavigationProps } from "../types";
 import { useTheme, getColors } from "./ThemeToggle";
 import ThemeToggle from "./ThemeToggle";
 
-// ============================================================================
-// COMPONENT: Navigation
-// ============================================================================
 
-
-const Navigation = ({
+function Navigation({
   currentPage,
   onNavigate,
   onLogoClick,
-}: NavigationProps) => {
+}: NavigationProps) {
   const { theme } = useTheme();
   const colors = getColors(theme);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,13 +39,10 @@ const Navigation = ({
             <div
               className="text-xl sm:text-2xl font-bold"
               style={{
-                color:
-                  theme === "dark"
-                    ? colors.lightText
-                    : colors.darkText,
+                color: theme === "dark" ? colors.lightText : colors.darkText,
               }}
             >
-               Oceans Relief
+              Oceans Relief
             </div>
           </button>
 
@@ -58,9 +51,7 @@ const Navigation = ({
               onClick={() => onNavigate("home")}
               className="transition font-medium text-sm xl:text-base"
               style={{
-                color: isActive("home")
-                  ? colors.gold
-                  : colors.mutedText,
+                color: isActive("home") ? colors.gold : colors.mutedText,
                 fontWeight: isActive("home") ? 600 : 500,
               }}
             >
@@ -71,9 +62,7 @@ const Navigation = ({
               onClick={() => onNavigate("relief")}
               className="transition font-medium text-sm xl:text-base"
               style={{
-                color: isActive("relief")
-                  ? colors.gold
-                  : colors.mutedText,
+                color: isActive("relief") ? colors.gold : colors.mutedText,
                 fontWeight: isActive("relief") ? 600 : 500,
               }}
             >
@@ -84,9 +73,7 @@ const Navigation = ({
               onClick={() => onNavigate("about")}
               className="transition font-medium text-sm xl:text-base"
               style={{
-                color: isActive("about")
-                  ? colors.gold
-                  : colors.mutedText,
+                color: isActive("about") ? colors.gold : colors.mutedText,
                 fontWeight: isActive("about") ? 600 : 500,
               }}
             >
@@ -94,19 +81,15 @@ const Navigation = ({
             </button>
 
             <ThemeToggle />
-
           </div>
 
           <div className="lg:hidden flex items-center gap-3">
             <ThemeToggle />
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
               className="p-2 rounded-lg transition"
               style={{
-                color:
-                  theme === "dark"
-                    ? colors.lightText
-                    : colors.darkText,
+                color: theme === "dark" ? colors.lightText : colors.darkText,
               }}
               aria-label="Toggle menu"
             >
@@ -146,50 +129,25 @@ const Navigation = ({
               style={{ borderColor: colors.borderColor }}
             >
               <div className="py-4 space-y-3">
-                <button
-                  onClick={() => {
-                    onNavigate("home");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 rounded-lg transition font-medium"
-                  style={{
-                    color: isActive("home")
-                      ? colors.gold
-                      : colors.mutedText,
-                  }}
-                >
-                  Home
-                </button>
-
-                <button
-                  onClick={() => {
-                    onNavigate("relief");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 rounded-lg transition font-medium"
-                  style={{
-                    color: isActive("relief")
-                      ? colors.gold
-                      : colors.mutedText,
-                  }}
-                >
-                  Find Relief
-                </button>
-
-                <button
-                  onClick={() => {
-                    onNavigate("about");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 rounded-lg transition font-medium"
-                  style={{
-                    color: isActive("about")
-                      ? colors.gold
-                      : colors.mutedText,
-                  }}
-                >
-                  About & Contact
-                </button>
+                {(["home", "relief", "about"] as PageType[]).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => {
+                      onNavigate(page);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 rounded-lg transition font-medium"
+                    style={{
+                      color: isActive(page) ? colors.gold : colors.mutedText,
+                    }}
+                  >
+                    {page === "home"
+                      ? "Home"
+                      : page === "relief"
+                      ? "Find Relief"
+                      : "About & Contact"}
+                  </button>
+                ))}
               </div>
             </motion.div>
           )}
@@ -197,6 +155,6 @@ const Navigation = ({
       </div>
     </motion.nav>
   );
-};
+}
 
 export default Navigation;
