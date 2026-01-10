@@ -2,9 +2,6 @@ import { motion } from 'framer-motion';
 import { getColors, useTheme } from '../components/ThemeToggle';
 import { PAGE_TRANSITIONS } from '../Configuration';
 
-// ============================================================================
-// PAGE: About & Contact
-// ============================================================================
 
 const About = () => {
   const { theme } = useTheme();

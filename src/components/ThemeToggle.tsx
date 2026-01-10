@@ -4,9 +4,8 @@ import { motion } from 'framer-motion';
 import type {ThemeMode} from '../types/index'
 import { DARK_COLORS,LIGHT_COLORS } from '../Configuration';
 
-// ============================================================================
+
 // THEME CONTEXT
-// ============================================================================
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

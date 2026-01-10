@@ -30,7 +30,7 @@ const MusicCard = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // البطاقة الأساسية حسب الريسبونيف
+  // for responsive
   const cardWidth = isMobile ? 180 : 280;
   const cardHeight = isMobile ? 270 : 420;
 

@@ -1,7 +1,4 @@
 
-// ============================================================================
-// CONSTANTS - Relief Data
-// ============================================================================
  interface Feature {
   icon: string;
   title: string;
@@ -15,11 +12,7 @@
   { mood: 'night', label: 'Night', emoji: '🌙' },
 ];
 
-interface FooterSection {
-  title: string;
-  links: string[];
-  key:string;
-}
+
 
 export const TagLines: readonly string[] = [
   'Find calm between the waves',
@@ -131,20 +124,36 @@ export const FEATURES: Feature[] = [
 ];
 
 
+export interface FooterSection {
+  title: string;
+  links: { label: string; url: string }[];
+  key: string;
+}
+
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
     title: "Home",
-    links: ["Features"],
-    key:"home",
+    key: "home",
+    links: [
+      { label: "Features", url: "/#features" }, 
+    ],
   },
   {
     title: "Find Relief",
-    links: ["Messages", "Music", "Release"],
-    key:"relief",
+    key: "relief",
+    links: [
+      { label: "Messages", url: "/relief#messages" },
+      { label: "Music", url: "/relief#music" },
+      { label: "Release", url: "/relief#release" },
+    ],
   },
   {
     title: "About & Contact",
-    links: ["Twitter", "LinkedIn", "GitHub"],
-    key:"about",
+    key: "about",
+    links: [
+      { label: "Twitter", url: "https://twitter.com" },
+      { label: "LinkedIn", url: "https://www.linkedin.com" },
+      { label: "GitHub", url: "https://github.com" },
+    ],
   },
 ];
