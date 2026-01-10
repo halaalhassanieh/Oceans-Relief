@@ -55,7 +55,7 @@ const CoverLayer: React.FC<{ onEnter: () => void }> = ({ onEnter }) => {
       }}
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
-        backgroundImage: 'url(/assets/ocean.jpg)',
+        backgroundImage: 'url(src/assets/ocean.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
