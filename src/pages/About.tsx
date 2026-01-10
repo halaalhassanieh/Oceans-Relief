@@ -127,7 +127,11 @@ const About: React.FC = () => {
                     color: theme === 'dark' ? colors.lightText : colors.darkText
                   }}
                 />
-                
+                 <p className="text-center mt-3 mb-8" style={{ color: colors.gold }}>
+            POV: You can be a Drama king/Queen if you want to
+            <br />
+           No one here is gonna judge you :) 
+          </p>
                 <div className="text-center mt-6">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
